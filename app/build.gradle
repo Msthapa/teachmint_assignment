@@ -36,6 +36,8 @@ android {
 
 dependencies {
     def hilt_version = "2.44"
+    def retrofit_version = "2.9.0"
+    def okhttp_version = "4.10.0"
 
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
@@ -43,6 +45,17 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    //hilt for dependency injection
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+
+    //retrofit dependency for network calling
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+
+    // gson converter for parsing data json to object and vice-versa
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+
+    // for better handling network request and response
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
 }
