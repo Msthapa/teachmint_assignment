@@ -1,7 +1,6 @@
 package com.teachmint.tmassignment.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,6 @@ import com.teachmint.tmassignment.databinding.FragmentRepoListBinding
 import com.teachmint.tmassignment.util.BaseFragment
 import com.teachmint.tmassignment.viewmodel.AssignmentViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Job
 
 @AndroidEntryPoint
 class RepoListFragment : BaseFragment() {
@@ -69,7 +67,6 @@ class RepoListFragment : BaseFragment() {
         mViewModel.searchRepositories(query, 10, 1)
         mViewModel.repoList.observe(viewLifecycleOwner,
             Observer {
-                Log.d("Mstahpa", "repoList observed ${it.size}")
                 repoListAdapter?.resetRepoList(ArrayList(it))
             })
     }
