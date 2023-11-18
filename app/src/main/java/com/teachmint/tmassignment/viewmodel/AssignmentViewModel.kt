@@ -10,4 +10,5 @@ class AssignmentViewModel @Inject constructor(
     private val repositoryListUseCase: GetRepositoryListUseCase
 ) : ViewModel() {
 
+   suspend fun searchRepositories(query : String, perPage : Int, pageNo : Int) = repositoryListUseCase.searchRepositories(query, perPage, pageNo)
 }
