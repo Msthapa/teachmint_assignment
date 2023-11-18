@@ -3,6 +3,7 @@ package com.teachmint.tmassignment.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.teachmint.tmassignment.R
 import com.teachmint.tmassignment.data.model.RepositoryUiModel
 import com.teachmint.tmassignment.databinding.LayoutRepositoryItemBinding
 
@@ -25,8 +26,12 @@ class RepoListAdapter : RecyclerView.Adapter<RepoListAdapter.RepoListItemViewHol
 
     inner class RepoListItemViewHolder(private val  binding : LayoutRepositoryItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(repositoryUiModel : RepositoryUiModel) {
-            binding.tvRepoName.text = repositoryUiModel.name
+        fun bind(item : RepositoryUiModel) {
+            with(binding.root.context){
+                binding.tvRepoName.text = getString(R.string.txt_repo_name, item.repoName)
+                binding.tvOwnerName.text = getString(R.string.txt_owner_name, item.ownerName)
+            }
+
         }
     }
 
