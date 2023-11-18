@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.teachmint.tmassignment.R
@@ -33,7 +34,6 @@ class RepoDetailFragment : Fragment() {
     }
 
     private fun inflateUI() {
-        Log.d("MsThapa","detail ui inflated")
         mViewModel.currentlySelectedRepo?.let { repoItem ->
             mBinding.tvRepoName.text = getString(R.string.txt_repo_full_name, repoItem.repoFullName)
             mBinding.tvOwnerName.text = getString(R.string.txt_owner_name, repoItem.ownerName)
@@ -44,7 +44,15 @@ class RepoDetailFragment : Fragment() {
             }
             mBinding.tvDescription.text = repoItem.description
             mBinding.tvProjectLink.text = repoItem.project_link
+            mViewModel.getContributorList(repoItem.contributors_url)
+            observeContributorList()
         }
+    }
+
+    private fun observeContributorList() {
+        mViewModel.contributorList.observe(viewLifecycleOwner, Observer {
+
+        })
     }
 
 }

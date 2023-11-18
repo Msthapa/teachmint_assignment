@@ -12,5 +12,8 @@ class AssignmentRepositoryImpl @Inject constructor(
     override suspend fun searchRepositories(query: String, perPage : Int, pageNo : Int) =
         assignmentNetworkDataSource.searchRepositories(query, perPage, pageNo)
 
+    override suspend fun getContributorsList(url: String) =
+        assignmentNetworkDataSource.getContributorsList(url)
+
 
 }

@@ -6,6 +6,8 @@ class RemoteDataSource @Inject constructor( private val apiService: ApiService )
 
     suspend fun searchRepositories(query : String, perPage : Int, pageNo : Int) = apiService.searchRepositories(query, perPage, pageNo)
 
+    suspend fun getContributorsList(url : String) = apiService.getContributorsList(url)
+
 
 
 
