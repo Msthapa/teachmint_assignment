@@ -36,7 +36,9 @@ class RepoListFragment : BaseFragment() {
     }
 
     private fun implementSearchRepo() {
-        repoListAdapter = RepoListAdapter()
+        repoListAdapter = RepoListAdapter(){ clickedRepoItem ->
+
+        }
         mBinding.rvRepoList.adapter = repoListAdapter
         mBinding.rvRepoList.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

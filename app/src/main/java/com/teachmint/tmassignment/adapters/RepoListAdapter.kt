@@ -7,7 +7,7 @@ import com.teachmint.tmassignment.R
 import com.teachmint.tmassignment.data.model.RepositoryUiModel
 import com.teachmint.tmassignment.databinding.LayoutRepositoryItemBinding
 
-class RepoListAdapter : RecyclerView.Adapter<RepoListAdapter.RepoListItemViewHolder>() {
+class RepoListAdapter(val onClick: (item: RepositoryUiModel) -> Unit) : RecyclerView.Adapter<RepoListAdapter.RepoListItemViewHolder>() {
 
     private var repoList = ArrayList<RepositoryUiModel>()
 
@@ -30,6 +30,9 @@ class RepoListAdapter : RecyclerView.Adapter<RepoListAdapter.RepoListItemViewHol
             with(binding.root.context){
                 binding.tvRepoName.text = getString(R.string.txt_repo_name, item.repoName)
                 binding.tvOwnerName.text = getString(R.string.txt_owner_name, item.ownerName)
+            }
+            binding.root.setOnClickListener {
+                onClick(item)
             }
 
         }
