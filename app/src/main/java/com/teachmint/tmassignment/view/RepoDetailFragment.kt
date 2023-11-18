@@ -1,16 +1,17 @@
 package com.teachmint.tmassignment.view
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.teachmint.tmassignment.R
+import com.teachmint.tmassignment.adapters.ContributorsListAdapter
 import com.teachmint.tmassignment.databinding.FragmentRepoDetailBinding
 import com.teachmint.tmassignment.viewmodel.AssignmentViewModel
 
@@ -51,7 +52,10 @@ class RepoDetailFragment : Fragment() {
 
     private fun observeContributorList() {
         mViewModel.contributorList.observe(viewLifecycleOwner, Observer {
-
+            val mAdapter = ContributorsListAdapter(it)
+            mBinding.rvContributors.adapter = mAdapter
+          mBinding.rvContributors.layoutManager = GridLayoutManager(context, 3)
+            mBinding.contributors.text = getString(R.string.txt_Contributors, it.size.toString())
         })
     }
 
