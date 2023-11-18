@@ -22,6 +22,7 @@ fun RepoResponse.toRepositoryItemList() : List<RepositoryUiModel> {
             RepositoryUiModel(
                 repoId = it.id,
                 repoName = it.name,
+                repoFullName=it.fullName,
                 ownerName = it.owner.login,
                 description = it.description,
                 ownerImageUrl = it.owner.avatarUrl,
