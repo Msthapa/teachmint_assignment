@@ -19,7 +19,7 @@ import kotlinx.coroutines.Job
 @AndroidEntryPoint
 class RepoListFragment : BaseFragment() {
 
-    lateinit var mBinding : FragmentRepoListBinding
+    private lateinit var mBinding : FragmentRepoListBinding
     private val mViewModel : AssignmentViewModel by activityViewModels()
     private var repoListAdapter : RepoListAdapter ?= null
     override fun onCreate(savedInstanceState: Bundle?) {
