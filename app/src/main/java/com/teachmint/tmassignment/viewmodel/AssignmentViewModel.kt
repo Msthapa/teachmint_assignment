@@ -3,7 +3,7 @@ package com.teachmint.tmassignment.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.teachmint.tmassignment.data.model.ContributorListUiModel
+import com.teachmint.tmassignment.data.model.ContributorUiModel
 import com.teachmint.tmassignment.data.model.RepositoryUiModel
 import com.teachmint.tmassignment.data.remote.model.toContributorListUiModel
 import com.teachmint.tmassignment.data.remote.model.toRepositoryItemList
@@ -23,7 +23,7 @@ class AssignmentViewModel @Inject constructor(
     private var searchRepoJob: Job? = null
     var currentlySelectedRepo : RepositoryUiModel ?= null
     val repoList = MutableLiveData<List<RepositoryUiModel>>()
-    val contributorList = MutableLiveData<List<ContributorListUiModel>>()
+    val contributorList = MutableLiveData<List<ContributorUiModel>>()
 
     fun searchRepositories(query: String, perPage: Int, pageNo: Int) {
         searchRepoJob?.cancel()

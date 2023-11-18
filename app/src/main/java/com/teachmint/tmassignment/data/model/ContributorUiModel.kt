@@ -1,6 +1,6 @@
 package com.teachmint.tmassignment.data.model
 
-data class ContributorListUiModel(
+data class ContributorUiModel(
     val login : String,
     val avatarUrl : String
 )
