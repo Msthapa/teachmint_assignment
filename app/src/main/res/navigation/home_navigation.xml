@@ -12,9 +12,8 @@
         tools:layout="@layout/fragment_repo_list">
 
         <action
-        android:id="@+id/action_repolist_to_repodetail"
-        app:destination="@id/nav_repo_detail" />
-
+            android:id="@+id/action_repolist_to_repodetail"
+            app:destination="@id/nav_repo_detail" />
     </fragment>
 
     <fragment
@@ -22,7 +21,16 @@
         android:name="com.teachmint.tmassignment.view.RepoDetailFragment"
         android:label="RP_DETAIL"
         tools:layout="@layout/fragment_repo_detail">
+        <action
+            android:id="@+id/action_repodetail_to_projectwebview"
+            app:destination="@id/nav_project_webview" />
+    </fragment>
 
+    <fragment
+        android:id="@+id/nav_project_webview"
+        android:name="com.teachmint.tmassignment.view.ProjectWebViewFragment"
+        android:label="PRO_WEB"
+        tools:layout="@layout/fragment_project_web_view">
     </fragment>
 
 </navigation>
