@@ -1,16 +1,23 @@
 package com.teachmint.tmassignment.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.teachmint.tmassignment.R
 import com.teachmint.tmassignment.databinding.FragmentRepoDetailBinding
+import com.teachmint.tmassignment.viewmodel.AssignmentViewModel
 
 
 class RepoDetailFragment : Fragment() {
 
     private lateinit var mBinding : FragmentRepoDetailBinding
+    private val mViewModel : AssignmentViewModel by activityViewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -20,9 +27,24 @@ class RepoDetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         mBinding = FragmentRepoDetailBinding.inflate(inflater, container, false)
+        inflateUI()
         return mBinding.root
+    }
+
+    private fun inflateUI() {
+        Log.d("MsThapa","detail ui inflated")
+        mViewModel.currentlySelectedRepo?.let { repoItem ->
+            mBinding.tvRepoName.text = getString(R.string.txt_repo_full_name, repoItem.repoFullName)
+            mBinding.tvOwnerName.text = getString(R.string.txt_owner_name, repoItem.ownerName)
+            context?.let {
+                Glide.with(it).load(repoItem.ownerImageUrl).apply(
+                    RequestOptions().placeholder(R.mipmap.ic_launcher)
+                ).into(mBinding.ivOwnerPic)
+            }
+            mBinding.tvDescription.text = repoItem.description
+            mBinding.tvProjectLink.text = repoItem.project_link
+        }
     }
 
 }
