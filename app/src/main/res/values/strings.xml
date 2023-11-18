@@ -5,4 +5,5 @@
     <string name="txt_owner_name">Owner : %s</string>
     <string name="txt_project_link">Project Link : </string>
     <string name="txt_Description">Description : </string>
+    <string name="txt_Contributors">Contributors : %s </string>
 </resources>
