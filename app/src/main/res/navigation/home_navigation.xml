@@ -11,6 +11,18 @@
         android:label="RP_LIST"
         tools:layout="@layout/fragment_repo_list">
 
+        <action
+        android:id="@+id/action_repolist_to_repodetail"
+        app:destination="@id/nav_repo_detail" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_repo_detail"
+        android:name="com.teachmint.tmassignment.view.RepoDetailFragment"
+        android:label="RP_DETAIL"
+        tools:layout="@layout/fragment_repo_detail">
+
     </fragment>
 
 </navigation>
