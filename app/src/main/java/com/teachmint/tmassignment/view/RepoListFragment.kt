@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.teachmint.tmassignment.R
 import com.teachmint.tmassignment.adapters.RepoListAdapter
 import com.teachmint.tmassignment.databinding.FragmentRepoListBinding
 import com.teachmint.tmassignment.util.BaseFragment
@@ -35,7 +37,8 @@ class RepoListFragment : BaseFragment() {
 
     private fun implementSearchRepo() {
         repoListAdapter = RepoListAdapter(){ clickedRepoItem ->
-
+           mViewModel.currentlySelectedRepo = clickedRepoItem
+            findNavController().navigate(R.id.action_repolist_to_repodetail)
         }
         mBinding.rvRepoList.adapter = repoListAdapter
         mBinding.rvRepoList.layoutManager =
