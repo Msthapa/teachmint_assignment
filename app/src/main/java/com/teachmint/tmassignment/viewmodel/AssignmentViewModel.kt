@@ -18,6 +18,8 @@ class AssignmentViewModel @Inject constructor(
 
     private var searchRepoJob: Job? = null
     val repoList = MutableLiveData<List<RepositoryUiModel>>()
+    var currentlySelectedRepo : RepositoryUiModel ?= null
+
     fun searchRepositories(query: String, perPage: Int, pageNo: Int) {
         searchRepoJob?.cancel()
         searchRepoJob = viewModelScope.launch {
