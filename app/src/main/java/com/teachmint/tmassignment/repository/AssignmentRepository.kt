@@ -1,10 +1,9 @@
 package com.teachmint.tmassignment.repository
 
-import androidx.lifecycle.LiveData
-import com.teachmint.tmassignment.data.model.RepositoryUiModel
-import com.teachmint.tmassignment.util.DataWrapper
+import com.teachmint.tmassignment.data.remote.model.RepoResponse
+import retrofit2.Response
 
 interface AssignmentRepository {
-    suspend fun searchRepositories(query : String, perPage : Int, pageNo : Int) : LiveData<DataWrapper<List<RepositoryUiModel>>>
+    suspend fun searchRepositories(query : String, perPage : Int, pageNo : Int) : Response<RepoResponse>
 
 }
