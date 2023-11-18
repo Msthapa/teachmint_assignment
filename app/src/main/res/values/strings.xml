@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">TmAssignment</string>
     <string name="txt_repo_name">Repo Name : %s</string>
+    <string name="txt_repo_full_name">Full Name : %s</string>
     <string name="txt_owner_name">Owner : %s</string>
+    <string name="txt_project_link">Project Link : </string>
+    <string name="txt_Description">Description : </string>
 </resources>
