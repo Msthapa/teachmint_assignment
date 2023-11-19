@@ -1,5 +1,6 @@
 package com.teachmint.tmassignment.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -64,6 +65,14 @@ class AssignmentViewModel @Inject constructor(
         viewModelScope.launch {
             getAllRepoUseCase.getAllRepositories()?.let {
                 remainingOfflineRepo -= it.size
+            }
+        }
+    }
+
+    fun updateListOnNoNetwork(){
+        viewModelScope.launch {
+            getAllRepoUseCase.getAllRepositories()?.let {
+                repoList.postValue(it.filterNotNull())
             }
         }
     }
