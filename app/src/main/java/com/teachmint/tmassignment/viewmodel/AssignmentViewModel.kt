@@ -1,6 +1,5 @@
 package com.teachmint.tmassignment.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,6 +14,7 @@ import com.teachmint.tmassignment.usecases.InsertRepoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,23 +31,34 @@ class AssignmentViewModel @Inject constructor(
     val contributorList = MutableLiveData<List<ContributorUiModel>>()
     var remainingOfflineRepo = 15
 
-    fun searchRepositories(query: String, perPage: Int, pageNo: Int) {
+    fun searchRepositories(query: String, perPage: Int, pageNo: Int, byScroll : Boolean,byScrollEnd : (item: List<RepositoryUiModel>) -> Unit) {
         searchRepoJob?.cancel()
-        searchRepoJob = viewModelScope.launch {
-            val response = repositoryListUseCase.searchRepositories(query, perPage, pageNo)
-            if (response.isSuccessful) {
-                val repositoryUiItem = response.body()?.toRepositoryItemList() ?: listOf()
-                repositoryUiItem.forEach {
-                    if (remainingOfflineRepo > 0) {
-                        remainingOfflineRepo -= 1
-                        insertRepoUseCase.insertRepositoryIntoDataBase(it)
+        try {
+            searchRepoJob = viewModelScope.launch {
+                val response = repositoryListUseCase.searchRepositories(query, perPage, pageNo)
+                if (response.isSuccessful) {
+                    val repositoryUiItem = response.body()?.toRepositoryItemList() ?: listOf()
+                    repositoryUiItem.forEach {
+                        if (remainingOfflineRepo > 0) {
+                            remainingOfflineRepo -= 1
+                            insertRepoUseCase.insertRepositoryIntoDataBase(it)
+                        }
                     }
+                    if(!byScroll) {
+                        repoList.postValue(repositoryUiItem)
+                    }else {
+                        byScrollEnd(repositoryUiItem)
+                    }
+                } else {
+                    if(!byScroll)
+                    repoList.postValue(listOf())
                 }
-                repoList.postValue(repositoryUiItem)
-            } else {
-                repoList.postValue(listOf())
             }
+        }catch (e : Exception) {
+            e.printStackTrace()
         }
+
+
     }
 
     fun getContributorList(url : String) {

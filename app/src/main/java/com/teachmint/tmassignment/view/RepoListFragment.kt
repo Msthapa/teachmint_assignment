@@ -6,6 +6,7 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.teachmint.tmassignment.R
 import com.teachmint.tmassignment.adapters.RepoListAdapter
 import com.teachmint.tmassignment.databinding.FragmentRepoListBinding
@@ -29,6 +31,8 @@ class RepoListFragment : BaseFragment() {
     private lateinit var mBinding : FragmentRepoListBinding
     private val mViewModel : AssignmentViewModel by activityViewModels()
     private var repoListAdapter : RepoListAdapter ?= null
+    private var currentPageNo : Int = 1
+    private var lastSearchedQuery : String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -41,13 +45,22 @@ class RepoListFragment : BaseFragment() {
         implementSearchRepo()
         registerNetworkCallback()
         observeData()
+        registerRecylerviewScroll()
         return mBinding.root
     }
 
     private fun implementSearchRepo() {
         repoListAdapter = RepoListAdapter(){ clickedRepoItem ->
            mViewModel.currentlySelectedRepo = clickedRepoItem
-            findNavController().navigate(R.id.action_repolist_to_repodetail)
+            context?.let {
+                if(isNetworkAvailable(it)){
+                    findNavController().navigate(R.id.action_repolist_to_repodetail)
+                }else{
+                    Toast.makeText(context,"Please connect to Internet!",Toast.LENGTH_SHORT).show()
+                }
+            }
+
+
         }
         mBinding.rvRepoList.adapter = repoListAdapter
         mBinding.rvRepoList.layoutManager =
@@ -66,6 +79,7 @@ class RepoListFragment : BaseFragment() {
                         newText?.let {
                             if (it.isNotEmpty()) {
                                 searchGitRepos(it)
+                                lastSearchedQuery = it
                             } else {
                                 // need to show local list
                             }
@@ -82,7 +96,9 @@ class RepoListFragment : BaseFragment() {
         })
     }
     private fun searchGitRepos(query: String) {
-        mViewModel.searchRepositories(query, 10, 1)
+        mViewModel.searchRepositories(query, 10, currentPageNo, false){
+            // only required while recyclerView end come
+        }
     }
 
     private fun registerNetworkCallback() {
@@ -100,7 +116,7 @@ class RepoListFragment : BaseFragment() {
         }
 
         override fun onLost(network: Network) {
-           Toast.makeText(context,"Intenet connection gone!",Toast.LENGTH_SHORT).show()
+           Toast.makeText(context,"Internet connection gone!",Toast.LENGTH_SHORT).show()
             mViewModel.updateListOnNoNetwork()
         }
     }
@@ -110,5 +126,46 @@ class RepoListFragment : BaseFragment() {
             Observer {
                 repoListAdapter?.resetRepoList(ArrayList(it))
             })
+    }
+
+    private fun registerRecylerviewScroll() {
+        mBinding.rvRepoList.addOnScrollListener(object  : RecyclerView.OnScrollListener() {
+
+            // This method will be called when the user starts scrolling
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                when (newState) {
+                    RecyclerView.SCROLL_STATE_IDLE -> {
+                        // The RecyclerView is not currently scrolling
+                        // Handle the idle state here
+
+                    }
+                    RecyclerView.SCROLL_STATE_DRAGGING -> {
+
+                    }
+                    RecyclerView.SCROLL_STATE_SETTLING -> {
+
+                    }
+                }
+            }
+
+            // This method will be called when the RecyclerView is scrolled
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                // dx and dy represent the amount of horizontal and vertical scroll
+                // Handle the scroll event here
+
+               val lvt =  (mBinding.rvRepoList.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+               val ic = (mBinding.rvRepoList.layoutManager as LinearLayoutManager).itemCount
+
+                if(ic - lvt < 2 && ic / 10 == currentPageNo){
+                    currentPageNo += 1
+                    mViewModel.searchRepositories(lastSearchedQuery, 10, currentPageNo, true){
+                        repoListAdapter?.addRepositoryList(it)
+                        val itc = (mBinding.rvRepoList.layoutManager as LinearLayoutManager).itemCount
+                    }
+                }
+            }
+        })
     }
 }
