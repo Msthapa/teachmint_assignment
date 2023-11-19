@@ -26,4 +26,10 @@ class HomeActivity : AppCompatActivity() {
         navController = navHostFragment.navController
     }
 
+    override fun onStart() {
+        super.onStart()
+        mViewModel.updateRemainingRepoNo()
+    }
+
+
 }

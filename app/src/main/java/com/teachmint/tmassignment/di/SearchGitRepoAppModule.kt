@@ -1,9 +1,12 @@
 package com.teachmint.tmassignment.di
 
 import android.content.Context
+import androidx.room.Room
 import com.google.gson.Gson
 import com.teachmint.tmassignment.BuildConfig.BASE_URL_GIT
 import com.teachmint.tmassignment.data.local.LocalDataSource
+import com.teachmint.tmassignment.data.local.room.AssignmentDataBase
+import com.teachmint.tmassignment.data.local.room.RepositoryDAO
 import com.teachmint.tmassignment.data.remote.ApiService
 import com.teachmint.tmassignment.data.remote.RemoteDataSource
 import com.teachmint.tmassignment.repository.AssignmentRepository
@@ -27,6 +30,23 @@ object SearchGitRepoAppModule {
     @Singleton
     @Provides
     fun providesApplicationContext(@ApplicationContext context: Context) = context
+
+    @Provides
+    @Singleton
+    fun provideAssignmentDatabase(@ApplicationContext context: Context): AssignmentDataBase {
+        return Room.databaseBuilder(
+            context,
+            AssignmentDataBase::class.java,
+            "assignment_database"
+        ).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideYourDao(yourDatabase: AssignmentDataBase): RepositoryDAO {
+        return yourDatabase.repositoryDAO()
+    }
+
 
     @Singleton
     @Provides
